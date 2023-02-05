@@ -1,0 +1,12 @@
+.vscode/
+env/
+*.exe
+*.pdf
+datasets/
+gpt-2/
+*.key
+*.jpg
+*.mp4
+*.mov
+*.npy
+*.zip
