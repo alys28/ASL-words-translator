@@ -11,5 +11,6 @@ int main(){
     }
 
     //*looping through all the data sets, and removing the articles;
-    ifstream cin()
+    ifstream cin();
+    for()
 }
