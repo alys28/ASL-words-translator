@@ -10,3 +10,9 @@ gpt-2/
 *.mov
 *.npy
 *.zip
+/american-sign-language_1
+/ASLClassification
+/datasetASL
+/frontend/asl-converter/node_modules
+/MS-ASL/validation_video_data
+/yolov7
