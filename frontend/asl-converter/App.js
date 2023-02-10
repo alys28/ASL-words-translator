@@ -1,6 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  ScrollView,
+  AppRegistry,
+} from "react-native";
 import { Icon } from "react-native-elements";
 import PhoneCamera from "./Components/PhoneCamera";
 import { Camera, CameraType, requestCameraPermissionsAsync } from "expo-camera";
@@ -69,6 +76,8 @@ export default function App() {
     return <PhoneCamera />;
   }
 }
+
+AppRegistry.registerComponent(appName, () => App);
 
 const styles = StyleSheet.create({
   container: {
