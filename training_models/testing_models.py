@@ -6,61 +6,19 @@ import pandas as pd
 from PIL import Image
 import os
 import math
-def get_image(video_url, video_path, start_time, end_time, fps):
-    #get the right pathS
-    capture = cv2.VideoCapture(f"training_video_data/{video_url}.mp4")
-    frameNr = 0
-    start_frame=start_time*fps
-    end_frame=end_time*fps
 
-    # buf = np.empty((frameCount, frameHeight, frameWidth, 3), np.dtype('uint8'))
-
-    frames=[]
-    while (True):
-        success, img = capture.read()
-        # print(frameNr)
-        if success and frameNr>start_frame and frameNr<end_frame:
-            if frameNr%30==0: 
-                #cropping the image
-             
-
-
-                # #transform into numpy array
-                w, h, c = img.shape
-
-                if w < 226 or h < 226:
-                    d = 226. - min(w, h)
-                    sc = 1 + d / min(w, h)
-                    img = cv2.resize(img, dsize=(0, 0), fx=sc, fy=sc)
-
-                if w > 256 or h > 256:
-                    img = cv2.resize(img, (math.ceil(w * (256 / w)), math.ceil(h * (256 / h))))
-
-                img = (img / 255.) * 2 - 1
-
-                frames.append(img)
-
-                #this line used to write it into a folder
-                # cv2.imwrite(f'{video_url}/frame_{frameNr}.jpg', img)
-
-        #end of the video, or end of the portion of the video
-        if frameNr>end_frame:
-            break
-    
-        frameNr = frameNr+1
-
-    capture.release()
-
+#changing the frame into a file
+def get_files(frames):
     mode=0o666
-
-    
+    for fraaame in frames:
+            print(fraaame)
     try:
         #if folder exists, overwrite it   
-        if os.path.isdir(f"demo_videos") == False:
-            os.mkdir(f"demo_videos", mode)
+        # if os.path.isdir("demo_videos/") == False:
+        #     os.mkdir("demo_videos/", mode)
 
         #saves files
-        np.save(f"demo_videos/numpy_video_file", np.asarray(frames, dtype=np.float32), allow_pickle=True, fix_imports=True)
+        np.save("demo_video_file", np.asarray(frames, dtype=np.float32), allow_pickle=True, fix_imports=True)
     
     except FileNotFoundError:
         pass
@@ -75,9 +33,9 @@ def get_image(video_url, video_path, start_time, end_time, fps):
 
 # get_image("alkfjdsl2", "test-video2", 5, 30, 29.97)
 
-cam = cv2.VideoCapture(0)
 # changing an image into an array
 def change_img(image_name):
+
     img = Image.open(f"{image_name}")
  
     # asarray() class is used to convert
@@ -90,15 +48,44 @@ def change_img(image_name):
     #  shape
     print(numpydata.shape)
 
+cam = cv2.VideoCapture(0)
 
+i=0
+frames=[]
 while True:
     check, frame = cam.read()
-    print(frame)
+    # print(frame)
+
+    #inputting the image into the frames list.
+    img=frame
+
+    # #transform into numpy array
+    w, h, c = img.shape
+
+    if w < 226 or h < 226:
+        d = 226. - min(w, h)
+        sc = 1 + d / min(w, h)
+        img = cv2.resize(img, dsize=(0, 0), fx=sc, fy=sc)
+
+    if w > 256 or h > 256:
+        img = cv2.resize(img, (math.ceil(w * (256 / w)), math.ceil(h * (256 / h))))
+
+    img = (img / 255.) * 2 - 1
+
+    frames.append(img)
+
+    if i%15==0:
+        get_files(frames)
+    
+    i+=1
     cv2.imshow('video', frame)
 
+
     key = cv2.waitKey(1)
+    #breaks if we write escape, escape is key 27
     if key == 27:
         break
-    break
+    # breaK
+
 cam.release()
 cv2.destroyAllWindows()
