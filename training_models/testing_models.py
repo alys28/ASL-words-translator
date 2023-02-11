@@ -14,11 +14,11 @@ def get_files(frames):
             print(fraaame)
     try:
         #if folder exists, overwrite it   
-        # if os.path.isdir("demo_videos/") == False:
-        #     os.mkdir("demo_videos/", mode)
+        if os.path.isdir("training_models/demo_videos") == False:
+            os.mkdir("training_models/demo_videos", mode)
 
         #saves files
-        np.save("demo_video_file", np.asarray(frames, dtype=np.float32), allow_pickle=True, fix_imports=True)
+        np.save("training_models/demo_videos/demo_video_file", np.asarray(frames, dtype=np.float32), allow_pickle=True, fix_imports=True)
     
     except FileNotFoundError:
         pass
