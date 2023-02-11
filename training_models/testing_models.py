@@ -51,7 +51,19 @@ def get_image(video_url, video_path, start_time, end_time, fps):
 
     capture.release()
 
+    mode=0o666
 
+    
+    try:
+        #if folder exists, overwrite it   
+        if os.path.isdir(f"demo_videos") == False:
+            os.mkdir(f"demo_videos", mode)
+
+        #saves files
+        np.save(f"demo_videos/numpy_video_file", np.asarray(frames, dtype=np.float32), allow_pickle=True, fix_imports=True)
+    
+    except FileNotFoundError:
+        pass
 
     return np.asarray(frames, dtype=np.float32)
         
