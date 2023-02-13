@@ -7,7 +7,7 @@ from PIL import Image
 import os
 import math
 def get_image(video_url, video_path, start_time, end_time, fps):
-    #get the right pathS
+    #get the right path
     capture = cv2.VideoCapture(f"training_video_data/{video_url}.mp4")
     frameNr = 0
     start_frame=start_time*fps
@@ -87,6 +87,5 @@ while True:
     key = cv2.waitKey(1)
     if key == 27:
         break
-    break
 cam.release()
 cv2.destroyAllWindows()
