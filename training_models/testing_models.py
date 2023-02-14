@@ -1,11 +1,12 @@
 import cv2
-import cv2
 import numpy as np
 from numpy import asarray
 import pandas as pd
 from PIL import Image
 import os
 import math
+import time
+import tensorflow as tf
 
 #changing the frame into a file
 def get_files(frames):
@@ -14,8 +15,8 @@ def get_files(frames):
             print(fraaame)
     try:
         #if folder exists, overwrite it   
-        if os.path.isdir("training_models/demo_videos") == False:
-            os.mkdir("training_models/demo_videos", mode)
+        # if os.path.isdir("training_models/demo_videos") == False:
+        #     os.mkdir("training_models/demo_videos", mode)
 
         #saves files
         np.save("training_models/demo_videos/demo_video_file", np.asarray(frames, dtype=np.float32), allow_pickle=True, fix_imports=True)
@@ -33,20 +34,20 @@ def get_files(frames):
 
 # get_image("alkfjdsl2", "test-video2", 5, 30, 29.97)
 
-# changing an image into an array
-def change_img(image_name):
+# # changing an image into an array
+# def change_img(image_name):
 
-    img = Image.open(f"{image_name}")
+#     img = Image.open(f"{image_name}")
  
-    # asarray() class is used to convert
-    # PIL images into NumPy arrays
-    numpydata = asarray(img)
+#     # asarray() class is used to convert
+#     # PIL images into NumPy arrays
+#     numpydata = asarray(img)
     
-    # <class 'numpy.ndarray'>
-    print(type(numpydata))
+#     # <class 'numpy.ndarray'>
+#     print(type(numpydata))
     
-    #  shape
-    print(numpydata.shape)
+#     #  shape
+#     print(numpydata.shape)
 
 cam = cv2.VideoCapture(0)
 
@@ -74,7 +75,7 @@ while True:
 
     frames.append(img)
 
-    if i%15==0:
+    if i%25==0:
         get_files(frames)
     
     i+=1
@@ -89,3 +90,61 @@ while True:
 
 cam.release()
 cv2.destroyAllWindows()
+
+time.sleep(0.5)
+
+# Process data
+saved_classes = ['apple',
+ 'cheese',
+ 'chicken',
+ 'church',
+ 'coffee',
+ 'college',
+ 'cook',
+ 'daughter',
+ 'dog',
+ 'door',
+ 'friendly',
+ 'grandmother',
+ 'home',
+ 'hungry',
+ 'milk',
+ 'not know',
+ 'shoes',
+ 'thursday',
+ 'time',
+ 'tomorrow',
+ 'uncle',
+ 'vacation',
+ 'woman',
+ 'your']
+X = []
+file_dir = "training_models/demo_videos/demo_video_file.npy"
+arr = np.load(file_dir)
+for frame in arr:
+    if len(X) == 0:
+        X = np.array([frame])
+    else:
+        X = np.append(X, np.array([frame]), axis=0)
+print(X.shape)
+
+print("LOADING....")
+
+time.sleep(0.5)
+
+# Predict data
+model = tf.keras.models.load_model('training_models/weights.03-2.05')
+predictions = {n: 0 for n in saved_classes}
+def predict_single_video(X):
+    for frame in X:
+        new_frame = tf.expand_dims(frame,0)
+        print(new_frame.shape)
+        preds = model.predict(new_frame)
+        pred = np.argmax(preds)
+        print(preds)
+        pred = saved_classes[pred]
+        predictions[pred] += 1
+    final_prediction = max(predictions, key=predictions.get)
+    return final_prediction, predictions
+
+print(predict_single_video(X))
