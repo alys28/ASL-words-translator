@@ -94,30 +94,7 @@ cv2.destroyAllWindows()
 time.sleep(0.5)
 
 # Process data
-saved_classes = ['apple',
- 'cheese',
- 'chicken',
- 'church',
- 'coffee',
- 'college',
- 'cook',
- 'daughter',
- 'dog',
- 'door',
- 'friendly',
- 'grandmother',
- 'home',
- 'hungry',
- 'milk',
- 'not know',
- 'shoes',
- 'thursday',
- 'time',
- 'tomorrow',
- 'uncle',
- 'vacation',
- 'woman',
- 'your']
+saved_classes = ["milk", "coffee", "door", "dog"]
 X = []
 file_dir = "training_models/demo_videos/demo_video_file.npy"
 arr = np.load(file_dir)
@@ -133,14 +110,14 @@ print("LOADING....")
 time.sleep(0.5)
 
 # Predict data
-model = tf.keras.models.load_model('training_models/weights.03-2.05')
+model = tf.keras.models.load_model('/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/MS-ASL/two_var/two_var_models/ResNet_four_var_weights.25-0.62')
 predictions = {n: 0 for n in saved_classes}
 def predict_single_video(X):
     for frame in X:
         new_frame = tf.expand_dims(frame,0)
         print(new_frame.shape)
         preds = model.predict(new_frame)
-        pred = np.argmax(preds)
+        pred_value = np.argmax(preds)
         print(preds)
         pred = saved_classes[pred]
         predictions[pred] += 1
