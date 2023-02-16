@@ -51,7 +51,7 @@ def get_files(frames):
 #     #  shape
 #     print(numpydata.shape)
 
-input("Start?")
+input("Press Enter to Start!")
 cam = cv2.VideoCapture(0)
 
 i=0
