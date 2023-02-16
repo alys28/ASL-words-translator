@@ -110,7 +110,7 @@ print("LOADING....")
 time.sleep(0.5)
 
 # Predict data
-model = tf.keras.models.load_model('/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/MS-ASL/two_var/two_var_models/ResNet_four_var_weights.25-0.62')
+model = tf.keras.models.load_model(r"D:\Personnel\Other learning\Programming\Personal_projects\ASL_Language_translation\training_models\ResNet_four_var_weights.25-0.62")
 predictions = {n: 0 for n in saved_classes}
 def predict_single_video(X):
     for frame in X:
