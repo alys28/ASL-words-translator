@@ -113,15 +113,21 @@ time.sleep(0.5)
 model = tf.keras.models.load_model('/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/MS-ASL/two_var/two_var_models/ResNet_four_var_weights.25-0.62')
 predictions = {n: 0 for n in saved_classes}
 def predict_single_video(X):
+    # Divide the total to get final probability
     for frame in X:
         new_frame = tf.expand_dims(frame,0)
         print(new_frame.shape)
         preds = model.predict(new_frame)
         pred_value = np.argmax(preds)
+        # for i in range(len(preds[0])):
+        #     print(preds[0][i])
+        #     predictions[saved_classes[i]] += preds[0][i]
+        #     total += preds[0][i]
+        predictions[saved_classes[pred_value]] += 1
         print(preds)
-        pred = saved_classes[pred]
-        predictions[pred] += 1
+    # for (key, val) in predictions.items():
+    #     predictions[key] = val / total
     final_prediction = max(predictions, key=predictions.get)
-    return final_prediction, predictions
+    return predictions, final_prediction
 
 print(predict_single_video(X))
