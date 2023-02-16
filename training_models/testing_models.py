@@ -9,6 +9,8 @@ import time
 import tensorflow as tf
 
 #changing the frame into a file
+model = tf.keras.models.load_model(r"D:\Personnel\Other learning\Programming\Personal_projects\ASL_Language_translation\training_models\ResNet_four_var_weights.25-0.62")
+
 def get_files(frames):
     mode=0o666
     for fraaame in frames:
@@ -49,6 +51,7 @@ def get_files(frames):
 #     #  shape
 #     print(numpydata.shape)
 
+input("Start?")
 cam = cv2.VideoCapture(0)
 
 i=0
@@ -110,7 +113,6 @@ print("LOADING....")
 time.sleep(0.5)
 
 # Predict data
-model = tf.keras.models.load_model(r"D:\Personnel\Other learning\Programming\Personal_projects\ASL_Language_translation\training_models\ResNet_four_var_weights.25-0.62")
 predictions = {n: 0 for n in saved_classes}
 def predict_single_video(X):
     # Divide the total to get final probability
