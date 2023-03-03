@@ -9,7 +9,7 @@ import time
 import tensorflow as tf
 
 #changing the frame into a file
-model = tf.keras.models.load_model(r"D:\Personnel\Other learning\Programming\Personal_projects\ASL_Language_translation\training_models\ResNet_four_var_weights.25-0.62")
+model = tf.keras.models.load_model("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/MS-ASL/two_var/two_var_models/ResNet_four_var_weights.25-0.62")
 
 def get_files(frames):
     mode=0o666
@@ -51,85 +51,86 @@ def get_files(frames):
 #     #  shape
 #     print(numpydata.shape)
 
-input("Press Enter to Start!")
-cam = cv2.VideoCapture(0)
-
-i=0
-frames=[]
 while True:
-    check, frame = cam.read()
-    # print(frame)
+    input("Press Enter to Start!")
+    cam = cv2.VideoCapture(0)
 
-    #inputting the image into the frames list.
-    img=frame
+    i=0
+    frames=[]
+    while True:
+        check, frame = cam.read()
+        # print(frame)
 
-    # #transform into numpy array
-    w, h, c = img.shape
+        #inputting the image into the frames list.
+        img=frame
 
-    if w < 226 or h < 226:
-        d = 226. - min(w, h)
-        sc = 1 + d / min(w, h)
-        img = cv2.resize(img, dsize=(0, 0), fx=sc, fy=sc)
+        # #transform into numpy array
+        w, h, c = img.shape
 
-    if w > 256 or h > 256:
-        img = cv2.resize(img, (math.ceil(w * (256 / w)), math.ceil(h * (256 / h))))
+        if w < 226 or h < 226:
+            d = 226. - min(w, h)
+            sc = 1 + d / min(w, h)
+            img = cv2.resize(img, dsize=(0, 0), fx=sc, fy=sc)
 
-    img = (img / 255.) * 2 - 1
+        if w > 256 or h > 256:
+            img = cv2.resize(img, (math.ceil(w * (256 / w)), math.ceil(h * (256 / h))))
 
-    frames.append(img)
+        img = (img / 255.) * 2 - 1
 
-    if i%25==0:
-        get_files(frames)
-    
-    i+=1
-    cv2.imshow('video', frame)
+        frames.append(img)
+
+        if i%25==0:
+            get_files(frames)
+        
+        i+=1
+        cv2.imshow('video', frame)
 
 
-    key = cv2.waitKey(1)
-    #breaks if we write escape, escape is key 27
-    if key == 27:
-        break
-    # breaK
+        key = cv2.waitKey(1)
+        #breaks if we write escape, escape is key 27
+        if key == 27:
+            break
+        # breaK
 
-cam.release()
-cv2.destroyAllWindows()
+    cam.release()
+    cv2.destroyAllWindows()
 
-time.sleep(0.5)
+    time.sleep(0.5)
 
-# Process data
-saved_classes = ["milk", "coffee", "door", "dog"]
-X = []
-file_dir = "training_models/demo_videos/demo_video_file.npy"
-arr = np.load(file_dir)
-for frame in arr:
-    if len(X) == 0:
-        X = np.array([frame])
-    else:
-        X = np.append(X, np.array([frame]), axis=0)
-print(X.shape)
+    # Process data
+    saved_classes = ["milk", "coffee", "door", "dog"]
+    X = []
+    file_dir = "training_models/demo_videos/demo_video_file.npy"
+    arr = np.load(file_dir)
+    for frame in arr:
+        if len(X) == 0:
+            X = np.array([frame])
+        else:
+            X = np.append(X, np.array([frame]), axis=0)
+    print(X.shape)
 
-print("LOADING....")
+    print("LOADING....")
 
-time.sleep(0.5)
+    time.sleep(0.5)
 
-# Predict data
-predictions = {n: 0 for n in saved_classes}
-def predict_single_video(X):
-    # Divide the total to get final probability
-    for frame in X:
-        new_frame = tf.expand_dims(frame,0)
-        print(new_frame.shape)
-        preds = model.predict(new_frame)
-        pred_value = np.argmax(preds)
-        # for i in range(len(preds[0])):
-        #     print(preds[0][i])
-        #     predictions[saved_classes[i]] += preds[0][i]
-        #     total += preds[0][i]
-        predictions[saved_classes[pred_value]] += 1
-        print(preds)
-    # for (key, val) in predictions.items():
-    #     predictions[key] = val / total
-    final_prediction = max(predictions, key=predictions.get)
-    return predictions, final_prediction
+    # Predict data
+    predictions = {n: 0 for n in saved_classes}
+    def predict_single_video(X):
+        # Divide the total to get final probability
+        for frame in X:
+            new_frame = tf.expand_dims(frame,0)
+            print(new_frame.shape)
+            preds = model.predict(new_frame)
+            pred_value = np.argmax(preds)
+            # for i in range(len(preds[0])):
+            #     print(preds[0][i])
+            #     predictions[saved_classes[i]] += preds[0][i]
+            #     total += preds[0][i]
+            predictions[saved_classes[pred_value]] += 1
+            print(preds)
+        # for (key, val) in predictions.items():
+        #     predictions[key] = val / total
+        final_prediction = max(predictions, key=predictions.get)
+        return predictions, final_prediction
 
-print(predict_single_video(X))
+    print(predict_single_video(X))
