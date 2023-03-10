@@ -5,6 +5,25 @@ import pandas as pd
 from PIL import Image
 import os
 import math
+def get_image(video_url, video_path, start_time, end_time, fps):
+    #get the right path
+    capture = cv2.VideoCapture(f"training_video_data/{video_url}.mp4")
+    frameNr = 0
+    start_frame=start_time*fps
+    end_frame=end_time*fps
+
+    # buf = np.empty((frameCount, frameHeight, frameWidth, 3), np.dtype('uint8'))
+
+    frames=[]
+    while (True):
+        success, img = capture.read()
+        # print(frameNr)
+        if success and frameNr>start_frame and frameNr<end_frame:
+            if frameNr%30==0: 
+                #cropping the image
+             
+
+
 import time
 import tensorflow as tf
 
@@ -25,6 +44,7 @@ def get_files(frames):
     
     except FileNotFoundError:
         pass
+
 
     return np.asarray(frames, dtype=np.float32)
         
@@ -86,6 +106,17 @@ while True:
         cv2.imshow('video', frame)
 
 
+
+while True:
+    check, frame = cam.read()
+    print(frame)
+    cv2.imshow('video', frame)
+
+    key = cv2.waitKey(1)
+    if key == 27:
+        break
+cam.release()
+cv2.destroyAllWindows()
         key = cv2.waitKey(1)
         #breaks if we write escape, escape is key 27
         if key == 27:
