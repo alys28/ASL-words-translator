@@ -5,22 +5,22 @@ import pandas as pd
 from PIL import Image
 import os
 import math
-def get_image(video_url, video_path, start_time, end_time, fps):
-    #get the right path
-    capture = cv2.VideoCapture(f"training_video_data/{video_url}.mp4")
-    frameNr = 0
-    start_frame=start_time*fps
-    end_frame=end_time*fps
+# def get_image(video_url, video_path, start_time, end_time, fps):
+#     #get the right path
+#     capture = cv2.VideoCapture(f"training_video_data/{video_url}.mp4")
+#     frameNr = 0
+#     start_frame=start_time*fps
+#     end_frame=end_time*fps
 
-    # buf = np.empty((frameCount, frameHeight, frameWidth, 3), np.dtype('uint8'))
+#     # buf = np.empty((frameCount, frameHeight, frameWidth, 3), np.dtype('uint8'))
 
-    frames=[]
-    while (True):
-        success, img = capture.read()
-        # print(frameNr)
-        if success and frameNr>start_frame and frameNr<end_frame:
-            if frameNr%30==0: 
-                #cropping the image
+#     frames=[]
+#     while (True):
+#         success, img = capture.read()
+#         # print(frameNr)
+#         if success and frameNr>start_frame and frameNr<end_frame:
+#             if frameNr%30==0: 
+#                 #cropping the image
              
 
 
@@ -70,62 +70,48 @@ def get_files(frames):
     
 #     #  shape
 #     print(numpydata.shape)
+# while True:
+#     input("Press Enter to Start!")
+#     cam = cv2.VideoCapture(0)
 
-while True:
-    input("Press Enter to Start!")
-    cam = cv2.VideoCapture(0)
+#     i=0
+#     frames=[]
+#     while True:
+#         check, frame = cam.read()
+#         # print(frame)
 
-    i=0
-    frames=[]
-    while True:
-        check, frame = cam.read()
-        # print(frame)
+#         #inputting the image into the frames list.
+#         img=frame
 
-        #inputting the image into the frames list.
-        img=frame
+#         # #transform into numpy array
+#         w, h, c = img.shape
 
-        # #transform into numpy array
-        w, h, c = img.shape
+#         if w < 226 or h < 226:
+#             d = 226. - min(w, h)
+#             sc = 1 + d / min(w, h)
+#             img = cv2.resize(img, dsize=(0, 0), fx=sc, fy=sc)
 
-        if w < 226 or h < 226:
-            d = 226. - min(w, h)
-            sc = 1 + d / min(w, h)
-            img = cv2.resize(img, dsize=(0, 0), fx=sc, fy=sc)
+#         if w > 256 or h > 256:
+#             img = cv2.resize(img, (math.ceil(w * (256 / w)), math.ceil(h * (256 / h))))
 
-        if w > 256 or h > 256:
-            img = cv2.resize(img, (math.ceil(w * (256 / w)), math.ceil(h * (256 / h))))
+#         img = (img / 255.) * 2 - 1
 
-        img = (img / 255.) * 2 - 1
+#         frames.append(img)
 
-        frames.append(img)
-
-        if i%25==0:
-            get_files(frames)
+#         if i%25==0:
+#             get_files(frames)
         
-        i+=1
-        cv2.imshow('video', frame)
-
-
+#         i+=1
+#         cv2.imshow('video', frame)
 
 while True:
     check, frame = cam.read()
-    print(frame)
     cv2.imshow('video', frame)
 
     key = cv2.waitKey(1)
+    #breaks if we write escape, escape is key 27
     if key == 27:
         break
-cam.release()
-cv2.destroyAllWindows()
-        key = cv2.waitKey(1)
-        #breaks if we write escape, escape is key 27
-        if key == 27:
-            break
-        # breaK
-
-    cam.release()
-    cv2.destroyAllWindows()
-
     time.sleep(0.5)
 
     # Process data
@@ -165,3 +151,10 @@ cv2.destroyAllWindows()
         return predictions, final_prediction
 
     print(predict_single_video(X))
+
+
+
+
+
+cam.release()
+cv2.destroyAllWindows()
