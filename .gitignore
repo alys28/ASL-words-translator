@@ -10,6 +10,7 @@ gpt-2/
 *.mov
 *.npy
 *.zip
+*.csv
 /american-sign-language_1
 /ASLClassification
 /datasetASL
