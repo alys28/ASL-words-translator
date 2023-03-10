@@ -5,10 +5,31 @@ import pandas as pd
 from PIL import Image
 import os
 import math
+def get_image(video_url, video_path, start_time, end_time, fps):
+    #get the right path
+    capture = cv2.VideoCapture(f"training_video_data/{video_url}.mp4")
+    frameNr = 0
+    start_frame=start_time*fps
+    end_frame=end_time*fps
+
+    # buf = np.empty((frameCount, frameHeight, frameWidth, 3), np.dtype('uint8'))
+
+    frames=[]
+    while (True):
+        success, img = capture.read()
+        # print(frameNr)
+        if success and frameNr>start_frame and frameNr<end_frame:
+            if frameNr%30==0: 
+                #cropping the image
+             
+
+
 import time
 import tensorflow as tf
 
 #changing the frame into a file
+model = tf.keras.models.load_model("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/MS-ASL/two_var/two_var_models/ResNet_four_var_weights.25-0.62")
+
 def get_files(frames):
     mode=0o666
     for fraaame in frames:
@@ -23,6 +44,7 @@ def get_files(frames):
     
     except FileNotFoundError:
         pass
+
 
     return np.asarray(frames, dtype=np.float32)
         
@@ -49,102 +71,97 @@ def get_files(frames):
 #     #  shape
 #     print(numpydata.shape)
 
-cam = cv2.VideoCapture(0)
+while True:
+    input("Press Enter to Start!")
+    cam = cv2.VideoCapture(0)
 
-i=0
-frames=[]
+    i=0
+    frames=[]
+    while True:
+        check, frame = cam.read()
+        # print(frame)
+
+        #inputting the image into the frames list.
+        img=frame
+
+        # #transform into numpy array
+        w, h, c = img.shape
+
+        if w < 226 or h < 226:
+            d = 226. - min(w, h)
+            sc = 1 + d / min(w, h)
+            img = cv2.resize(img, dsize=(0, 0), fx=sc, fy=sc)
+
+        if w > 256 or h > 256:
+            img = cv2.resize(img, (math.ceil(w * (256 / w)), math.ceil(h * (256 / h))))
+
+        img = (img / 255.) * 2 - 1
+
+        frames.append(img)
+
+        if i%25==0:
+            get_files(frames)
+        
+        i+=1
+        cv2.imshow('video', frame)
+
+
+
 while True:
     check, frame = cam.read()
-    # print(frame)
-
-    #inputting the image into the frames list.
-    img=frame
-
-    # #transform into numpy array
-    w, h, c = img.shape
-
-    if w < 226 or h < 226:
-        d = 226. - min(w, h)
-        sc = 1 + d / min(w, h)
-        img = cv2.resize(img, dsize=(0, 0), fx=sc, fy=sc)
-
-    if w > 256 or h > 256:
-        img = cv2.resize(img, (math.ceil(w * (256 / w)), math.ceil(h * (256 / h))))
-
-    img = (img / 255.) * 2 - 1
-
-    frames.append(img)
-
-    if i%25==0:
-        get_files(frames)
-    
-    i+=1
+    print(frame)
     cv2.imshow('video', frame)
 
-
     key = cv2.waitKey(1)
-    #breaks if we write escape, escape is key 27
     if key == 27:
         break
-    # breaK
-
 cam.release()
 cv2.destroyAllWindows()
+        key = cv2.waitKey(1)
+        #breaks if we write escape, escape is key 27
+        if key == 27:
+            break
+        # breaK
 
-time.sleep(0.5)
+    cam.release()
+    cv2.destroyAllWindows()
 
-# Process data
-saved_classes = ['apple',
- 'cheese',
- 'chicken',
- 'church',
- 'coffee',
- 'college',
- 'cook',
- 'daughter',
- 'dog',
- 'door',
- 'friendly',
- 'grandmother',
- 'home',
- 'hungry',
- 'milk',
- 'not know',
- 'shoes',
- 'thursday',
- 'time',
- 'tomorrow',
- 'uncle',
- 'vacation',
- 'woman',
- 'your']
-X = []
-file_dir = "training_models/demo_videos/demo_video_file.npy"
-arr = np.load(file_dir)
-for frame in arr:
-    if len(X) == 0:
-        X = np.array([frame])
-    else:
-        X = np.append(X, np.array([frame]), axis=0)
-print(X.shape)
+    time.sleep(0.5)
 
-print("LOADING....")
+    # Process data
+    saved_classes = ["milk", "coffee", "door", "dog"]
+    X = []
+    file_dir = "training_models/demo_videos/demo_video_file.npy"
+    arr = np.load(file_dir)
+    for frame in arr:
+        if len(X) == 0:
+            X = np.array([frame])
+        else:
+            X = np.append(X, np.array([frame]), axis=0)
+    print(X.shape)
 
-time.sleep(0.5)
+    print("LOADING....")
 
-# Predict data
-model = tf.keras.models.load_model('training_models/weights.03-2.05')
-predictions = {n: 0 for n in saved_classes}
-def predict_single_video(X):
-    for frame in X:
-        new_frame = tf.expand_dims(frame,0)
-        print(new_frame.shape)
-        preds = model.predict(new_frame)
-        pred = np.argmax(preds)
-        print(preds)
-        pred = saved_classes[pred]
-        predictions[pred] += 1
-    final_prediction = max(predictions, key=predictions.get)
-    return final_prediction, predictions
+    time.sleep(0.5)
 
-print(predict_single_video(X))
+    # Predict data
+    predictions = {n: 0 for n in saved_classes}
+    def predict_single_video(X):
+        # Divide the total to get final probability
+        for frame in X:
+            new_frame = tf.expand_dims(frame,0)
+            print(new_frame.shape)
+            preds = model.predict(new_frame)
+            pred_value = np.argmax(preds)
+            # for i in range(len(preds[0])):
+            #     print(preds[0][i])
+            #     predictions[saved_classes[i]] += preds[0][i]
+            #     total += preds[0][i]
+            predictions[saved_classes[pred_value]] += 1
+            print(preds)
+        # for (key, val) in predictions.items():
+        #     predictions[key] = val / total
+        final_prediction = max(predictions, key=predictions.get)
+        return predictions, final_prediction
+
+    print(predict_single_video(X))
