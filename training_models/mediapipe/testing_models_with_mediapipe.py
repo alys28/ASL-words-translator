@@ -15,7 +15,8 @@ mp_holistic = mp.solutions.holistic # Mediapipe Solutions
 def extract_coordinates():
     rows = []
     #creating empty file in folder, I added the start_time in the name of the csv file, so that if a symbol appears many times in a video, it will still be created in two different csv files, just that they will have different starting times
-    csv_file = f"/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
+    # csv_file = f"/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
+    csv_file="demo_test/demo.csv"
     # if os.path.exists(csv_file):
     #     return 
 
@@ -35,7 +36,7 @@ def extract_coordinates():
 
 
 #working with each video
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     if (cap.isOpened()== False): 
         print("Error opening video stream or file")
     # Read until video is completed
@@ -138,10 +139,12 @@ def make_prediction(model_path, labels, csv_file):
     return predictions, final_prediction
 
 
-
-model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/saved_model"
+model_path = "Simple-Dense-Layers/saved_model"
+# model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/saved_model"
 labels = ["coffee", "dog", "door", "milk"]
-csv_file = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
+csv_file = "demo_test/demo.csv"
+
+# csv_file = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
 extract_coordinates()
 print("LOADING...")
 time.sleep(1)
