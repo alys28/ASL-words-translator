@@ -139,12 +139,10 @@ def make_prediction(model_path, labels, csv_file):
     return predictions, final_prediction
 
 
-model_path = "Simple-Dense-Layers/saved_model"
-# model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/saved_model"
-labels = ["coffee", "dog", "door", "milk"]
-csv_file = "demo_test/demo.csv"
 
-# csv_file = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
+model_path = "training_models/mediapipe/Simple-Dense-Layers/saved_model"
+labels = ["coffee", "dog", "door", "milk"]
+csv_file = "training_models/mediapipe/demo_test/demo.csv"
 extract_coordinates()
 print("LOADING...")
 time.sleep(1)
