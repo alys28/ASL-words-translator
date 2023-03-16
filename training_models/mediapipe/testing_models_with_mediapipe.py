@@ -16,9 +16,10 @@ def extract_coordinates():
     rows = []
     #creating empty file in folder, I added the start_time in the name of the csv file, so that if a symbol appears many times in a video, it will still be created in two different csv files, just that they will have different starting times
     # csv_file = f"/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
-    csv_file="demo_test/demo.csv"
+    csv_file="training_models/mediapipe/demo_test/demo.csv"
     # if os.path.exists(csv_file):
     #     return 
+
 
 
 # Setup CSV File for the videos
@@ -109,7 +110,9 @@ def extract_coordinates():
                     break
 
             # When everything done, release the video capture object
-            cap.release()
+            cap.release() 
+
+
             # Closes all the frames
             cv2.destroyAllWindows()
             with open(csv_file, mode='a', newline='') as f:
