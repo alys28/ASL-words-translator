@@ -148,50 +148,10 @@ def make_prediction(model_path, labels, csv_file):
 
 
 
-model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/saved_model_25_labels"
-labels = ['research',
- 'hear',
- 'music',
- 'brother',
- 'ocean',
- 'many',
- 'i love you',
- 'dog',
- 'polite',
- 'milk',
- 'bookstore',
- 'doctor',
- 'i',
- 'classroom',
- 'focus',
- 'money',
- 'coffee',
- 'book',
- 'phone',
- 'chicken',
- 'photographer',
- 'hamburger',
- 'good morning',
- 'open',
- 'door']
+model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
+labels = ["coffee", "dog", "door", "milk"]
 csv_file = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
-# 
+extract_coordinates()
 print("LOADING...")
-time.sleep(1)
-print()
-
-if st.button('Run Model'):
-    st.write('LOADING')
-    extract_coordinates()
-    # predictions, final_prediction = make_prediction(model_path, labels, csv_file)
-    st.write('predictions')
-else:
-    st.write('Goodbye')
-
-
-loss_graph = Image.open("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/plots/loss_25_labels.png")
-acc_graph = Image.open("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/plots/accuracy_25_labels.png")
-
-st.image(loss_graph, caption='Loss')
-
-st.image(acc_graph, caption='Accuracy')
+time.sleep(0.5)
+print(make_prediction(model_path, labels, csv_file))
