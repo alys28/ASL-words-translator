@@ -146,11 +146,10 @@ def make_prediction(model_path, labels, csv_file):
     final_prediction = max(predictions, key=predictions.get)
     return predictions, final_prediction
 
-
-
 model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
 labels = ["coffee", "dog", "door", "milk"]
 csv_file = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
+input("TRY ME OUT!! ")
 extract_coordinates()
 print("LOADING...")
 time.sleep(0.5)
