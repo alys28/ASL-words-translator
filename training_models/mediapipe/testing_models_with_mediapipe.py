@@ -12,7 +12,7 @@ import time
 import streamlit as st
 from matplotlib import pyplot as plt
 from PIL import Image
-from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
+# from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 
 
 mp_drawing = mp.solutions.drawing_utils # Drawing helpers
@@ -21,7 +21,7 @@ def extract_coordinates():
     rows = []
     #creating empty file in folder, I added the start_time in the name of the csv file, so that if a symbol appears many times in a video, it will still be created in two different csv files, just that they will have different starting times
     # csv_file = f"/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
-    csv_file="/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
+    csv_file="D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/training_models/mediapipe/demo_test/demo.csv"
     # if os.path.exists(csv_file):
     #     return 
 
@@ -127,15 +127,15 @@ def extract_coordinates():
             return results
 
 def make_prediction(model_path, labels, csv_file):
-    model = tf.keras.models.load_model(model_path, compile=False)
-    model.compile(loss=SparseCategoricalCrossentropy(), optimizer=Adam(), metrics=["accuracy"])
+    my_model = tf.keras.models.load_model(model_path, compile=False)
+    my_model.compile(loss=SparseCategoricalCrossentropy(), optimizer=Adam(), metrics=["accuracy"])
     predictions = {n: 0 for n in labels}
     csv = pd.read_csv(csv_file)
     print(csv)
     coords = np.array(csv)
     for frame in coords:
         new_frame = tf.expand_dims(frame,0)
-        preds = model.predict(new_frame)
+        preds = my_model.predict(new_frame)
         pred_value = np.argmax(preds)
         # for i in range(len(preds[0])):
         #     print(preds[0][i])
@@ -146,9 +146,10 @@ def make_prediction(model_path, labels, csv_file):
     final_prediction = max(predictions, key=predictions.get)
     return predictions, final_prediction
 
-model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
+model_path = r"D:\Personnel\Other learning\Programming\Personal_projects\ASL_Language_translation\training_models\mediapipe\Simple-Dense-Layers\regularized-4-labels.10-0.68"# "D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
+# model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
 labels = ["coffee", "dog", "door", "milk"]
-csv_file = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
+csv_file = "D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/training_models/mediapipe/demo_test/demo.csv"
 input("TRY ME OUT!! ")
 extract_coordinates()
 print("LOADING...")

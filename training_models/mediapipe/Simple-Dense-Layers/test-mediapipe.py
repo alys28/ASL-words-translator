@@ -5,6 +5,8 @@ import pandas as pd
 from PIL import Image
 import os
 import math
+import time
+import tensorflow as tf
 def get_image(video_url, video_path, start_time, end_time, fps):
     #get the right path
     capture = cv2.VideoCapture(f"training_video_data/{video_url}.mp4")
@@ -24,8 +26,7 @@ def get_image(video_url, video_path, start_time, end_time, fps):
              
 
 
-import time
-import tensorflow as tf
+
 
 #changing the frame into a file
 model = tf.keras.models.load_model("saved_model")
