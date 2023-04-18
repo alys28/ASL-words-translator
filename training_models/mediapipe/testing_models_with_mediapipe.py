@@ -38,7 +38,7 @@ def extract_coordinates():
     with open(csv_file, mode='w', newline='') as f:
         csv_writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         csv_writer.writerow(landmarks)
-        
+    
 
 
 #working with each video
