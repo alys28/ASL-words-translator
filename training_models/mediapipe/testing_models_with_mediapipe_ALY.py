@@ -20,8 +20,8 @@ mp_holistic = mp.solutions.holistic # Mediapipe Solutions
 def extract_coordinates():
     rows = []
     #creating empty file in folder, I added the start_time in the name of the csv file, so that if a symbol appears many times in a video, it will still be created in two different csv files, just that they will have different starting times
-    # csv_file = f"/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
-    csv_file="D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/training_models/mediapipe/demo_test/demo.csv"
+    csv_file = f"/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
+    # csv_file="D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/training_models/mediapipe/demo_test/demo.csv"
     # if os.path.exists(csv_file):
     #     return 
 
@@ -146,10 +146,10 @@ def make_prediction(model_path, labels, csv_file):
     final_prediction = max(predictions, key=predictions.get)
     return predictions, final_prediction
 
-model_path = r"D:\Personnel\Other learning\Programming\Personal_projects\ASL_Language_translation\training_models\mediapipe\Simple-Dense-Layers\regularized-4-labels.10-0.68"# "D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
-# model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
+# model_path = r"D:\Personnel\Other learning\Programming\Personal_projects\ASL_Language_translation\training_models\mediapipe\Simple-Dense-Layers\regularized-4-labels.10-0.68"# "D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
+model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
 labels = ["coffee", "dog", "door", "milk"]
-csv_file = "D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/training_models/mediapipe/demo_test/demo.csv"
+csv_file = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
 input("TRY ME OUT!! ")
 extract_coordinates()
 print("LOADING...")
