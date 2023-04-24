@@ -1,0 +1,9 @@
+def hi(x):
+    sorted(x)
+    return x[int(len(x)/2)]
+
+x = [1,4,2,15,2,5132,135]
+print(x)
+hi(x)
+print(x)
+print(hi(x))
