@@ -147,7 +147,7 @@ def make_prediction(model_path, labels, csv_file):
     return predictions, final_prediction
 
 # model_path = r"D:\Personnel\Other learning\Programming\Personal_projects\ASL_Language_translation\training_models\mediapipe\Simple-Dense-Layers\regularized-4-labels.10-0.68"# "D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
-model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
+model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/AUGMENTED-FULL-regularized.34-0.99"
 labels = ["coffee", "dog", "door", "milk"]
 csv_file = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
 input("TRY ME OUT!! ")
