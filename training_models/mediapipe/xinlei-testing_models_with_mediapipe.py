@@ -19,9 +19,9 @@ mp_drawing = mp.solutions.drawing_utils # Drawing helpers
 mp_holistic = mp.solutions.holistic # Mediapipe Solutions
 def extract_coordinates():
     rows = []
-    #creating empty file in folder, I added the start_time in the name of the csv file, so that if a symbol appears many times in a video, it will still be created in two different csv files, just that they will have different starting times
-    # csv_file = f"/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
-    csv_file="D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/training_models/mediapipe/demo_test/demo.csv"
+    #creating empty file in folder, i added the start_time in the name of the csv file, so that if a symbol appears many times in a video, it will still be created in two different csv files, just that they will have different starting times
+    # csv_file = f"/users/aly/documents/programming/apps/machine learning/asl converter/training_models/mediapipe/demo_test/demo.csv"
+    csv_file="d:/personnel/other learning/programming/personal_projects/asl_language_translation/training_models/mediapipe/demo_test/demo.csv"
     # if os.path.exists(csv_file):
     #     return 
 
