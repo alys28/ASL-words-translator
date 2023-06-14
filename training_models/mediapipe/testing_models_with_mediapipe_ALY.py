@@ -42,7 +42,7 @@ def extract_coordinates():
 
 
 #working with each video
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
     if (cap.isOpened()== False): 
         print("Error opening video stream or file")
     # Read until video is completed
@@ -147,11 +147,12 @@ def make_prediction(model_path, labels, csv_file):
     return predictions, final_prediction
 
 # model_path = r"D:\Personnel\Other learning\Programming\Personal_projects\ASL_Language_translation\training_models\mediapipe\Simple-Dense-Layers\regularized-4-labels.10-0.68"# "D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
-model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
-labels = ["coffee", "dog", "door", "milk"]
-csv_file = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
-input("TRY ME OUT!! ")
-extract_coordinates()
-print("LOADING...")
-time.sleep(0.5)
-print(make_prediction(model_path, labels, csv_file))
+while True:
+    model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/Simple-Dense-Layers/AUGMENTED-FULL-REFLECTION-WITHOUT-LEAKAGE.48-0.69"
+    labels = ["coffee", "dog", "door", "milk"]
+    csv_file = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/demo_test/demo.csv"
+    input("TRY ME OUT!! ")
+    extract_coordinates()
+    print("LOADING...")
+    time.sleep(0.5)
+    print(make_prediction(model_path, labels, csv_file))
