@@ -14,6 +14,7 @@ gpt-2/
 *.docx
 *.txt
 *.csv
+*.json
 /american-sign-language_1
 /ASLClassification
 /datasetASL
