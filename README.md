@@ -1,2 +1,2 @@
-# ASL-words-translator
-"# ASL-polyhx" 
+# Artificial Sign Language: A Virtual Assistant for American Sign Language Users
+The goal of this project is to translate American Sign Language to English, and enable full communication between ASL Speakers and Non-ASL speakers
