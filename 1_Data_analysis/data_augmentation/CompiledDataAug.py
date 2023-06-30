@@ -12,31 +12,37 @@ def applyProjectiveGeo(currFilePath):
 
 def applyReflection(currFilePath, currDir, file):
     df = pd.read_csv(currFilePath)
-    new_df = swap_coordinates(csv, definePairs())
+    new_df = swap_coordinates(df, definePairs())
     save_file(df = new_df, name = file, path = currDir)
 
-def applyTransformations(currFilePath, currDir, file):
-    applyProjectiveGeo(currFilePath)
-    applyReflection(currFilePath, currDir, file)
+def applyTransformations(index, currFilePath, currDir, file):
+    if index ==0:
+        applyProjectiveGeo(currFilePath)
+    if index == 1:
+        applyReflection(currFilePath, currDir, file)
+
 
 def transformMe(DATADIR):
-    #running through all the files
-    FOLDERS = ['train', 'test']
-    labels = []
-    for folder in FOLDERS:
-        currDir = os.path.join(DATADIR, folder)
-        features = os.listdir(currDir)
+    for index in range(0,2):
+        #running through all the files
+        FOLDERS = ['train', 'test']
+        for folder in FOLDERS:
+            currDir = os.path.join(DATADIR, folder)
+            labels = os.listdir(currDir)
 
-        for feature in features:
-            #augmenting the files
-            currDir = os.path.join(currDir, feature)
-            files = os.listdir(currDir)
-            print(files)
+            for label in labels:
+                #augmenting the files
+                currDir = os.path.join(currDir, label)
+                files = os.listdir(currDir)
+                # print(files)
 
-            for file in files:
-                currFile = os.path.join(currDir, file)
-                applyTransformations(currFile, currDir, file)
+                for file in files:
+                    currfile = os.path.join(currDir, file)
+                    applytransformations(index, currfile, currDir, file)
 
 #following value should be changed
-DATADIR = "D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/000_Database/data_25_labels_augmentation/"
+DATADIR = "D:\Personnel\Other learning\Programming\Personal_projects\ASL_Language_translation\1_Data_analysis\data_augmentation\Data_augmentation\new_files"
+os.chdir(DATADIR)
+print(os.getcwd())
+# DATADIR = "D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/000_Database/data_25_labels_augmentation/"
 transformMe(DATADIR)

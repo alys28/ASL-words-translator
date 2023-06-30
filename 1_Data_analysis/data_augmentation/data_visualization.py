@@ -4,7 +4,7 @@
 # In[ ]:
 
 
-get_ipython().system('jupyter nbconvert --to script data_visualization.ipynb')
+# get_ipython().system('jupyter nbconvert --to script data_visualization.ipynb')
 
 
 # In[1]:

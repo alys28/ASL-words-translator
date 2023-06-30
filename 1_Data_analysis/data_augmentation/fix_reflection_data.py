@@ -5,7 +5,7 @@
 
 
 #converting file to python script
-get_ipython().system('jupyter nbconvert --to script fix-reflection-data.ipynb')
+# get_ipython().system('jupyter nbconvert --to script fix-reflection-data.ipynb')
 
 
 # In[1]:
@@ -19,15 +19,15 @@ import os
 # In[121]:
 
 
-csv = pd.read_csv("demo_copy.csv")
-csv
+# csv = pd.read_csv("demo_copy.csv")
+# csv
 
 
 # In[137]:
 
 
-data = csv.drop(columns="class")
-data
+# data = csv.drop(columns="class")
+# data
 
 
 # In[2]:
@@ -70,16 +70,16 @@ def definePairs():
 # In[161]:
 
 
-dic = {'A': [1, 4, 1, 4], 'B': [9, 2, 5, 3], 'C': [0, 0, 5, 3]}
-df = pd.DataFrame(dic)
+# dic = {'A': [1, 4, 1, 4], 'B': [9, 2, 5, 3], 'C': [0, 0, 5, 3]}
+# df = pd.DataFrame(dic)
 
 
 # In[162]:
 
 
-df['B'] = [ 4, 4, 4, 0]
-df['A'] = [ 4, 4, 4, 0]
-df
+# df['B'] = [ 4, 4, 4, 0]
+# df['A'] = [ 4, 4, 4, 0]
+# df
 
 
 # In[4]:
@@ -110,7 +110,7 @@ def swap_coordinates(data, pairs):
 
 
 # data["x1"] = data["y1"]
-data
+# data
 
 
 # In[93]:
@@ -123,18 +123,20 @@ data
 
 
 def save_file(df, name, path):
-    new_file = df.to_csv(os.path.join(path, name), index=False)
+    newFileName = "reflexion_" + str(name)
+    
+    df.to_csv(os.path.join(path, newFileName), index=False)
 
 
-# In[174]:
+ # In[174]:
 
 
-save_file(new_data, "demo_copy.csv", "C:/Users/malik/Desktop/ASL-Aly/ASL-words-translator/data_augmentation")
+# save_file(new_data, "demo_copy.csv", "C:/Users/malik/Desktop/ASL-Aly/ASL-words-translator/data_augmentation")
 
 
 # In[11]:
 #rewriting the function to accomodate new transformation file
-def fixReflectionFinal(folderPath, pairs):
+
 
 def fix_reflection(folder_path, pairs):
     for label in os.listdir(folder_path):
@@ -147,20 +149,20 @@ def fix_reflection(folder_path, pairs):
                         # data = csv.drop(columns="class")
                         new_data = swap_coordinates(csv, pairs)
                         save_file(new_data, name=os.path.splitext(file)[0] + "_REFLECTION_" + ".csv", path=os.path.join(folder_path, label))
-fix_reflection("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/data_augmentation/data_four_labels_augmentation", definePairs)            
+# fix_reflection("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/data_augmentation/data_four_labels_augmentation", definePairs)            
 
 
 # In[13]:
 
 
 # delete "old reflection files"
-folder_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/data_augmentation/data_four_labels_augmentation"
-for label in os.listdir(folder_path):
-        if label != ".DS_Store":
-                for file in os.listdir(os.path.join(folder_path, label)):
-                        if file != ".DS_Store":
-                                if ("reflection" in file):
-                                        os.remove(os.path.join(folder_path, label, file))
+# folder_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/data_augmentation/data_four_labels_augmentation"
+# for label in os.listdir(folder_path):
+#         if label != ".DS_Store":
+#                 for file in os.listdir(os.path.join(folder_path, label)):
+#                         if file != ".DS_Store":
+#                                 if ("reflection" in file):
+#                                         os.remove(os.path.join(folder_path, label, file))
 
 
 # In[183]:

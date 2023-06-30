@@ -5,7 +5,7 @@
 
 
 #converting jupyter notebook to python file
-get_ipython().system('jupyter nbconvert --to script data_augmentation_final.ipynb')
+# get_ipython().system('jupyter nbconvert --to script data_augmentation_final.ipynb')
 
 
 # In[8]:

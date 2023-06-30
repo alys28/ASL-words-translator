@@ -5,13 +5,13 @@
 
 
 #converting a jupyter notebook file to python script (module)
-get_ipython().system('jupyter nbconvert --to script projective_geo.ipynb')
+# get_ipython().system('jupyter nbconvert --to script projective_geo.ipynb')
 
 
 # In[3]:
 
 
-get_ipython().run_line_magic('run', 'data_visualization.ipynb')
+# get_ipython().run_line_magic('run', 'data_visualization.ipynb')
 import statistics
 import math
 import numpy as np
@@ -163,5 +163,5 @@ def xinlei_vinci(file_name, negativity = False):
 
 
 #testing
-xinlei_vinci("new_files/coffee_test.csv", negativity = False )
+# xinlei_vinci("new_files/coffee_test.csv", negativity = False )
 
