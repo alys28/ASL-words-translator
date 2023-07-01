@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 
 # get_ipython().system('jupyter nbconvert --to script data_visualization.ipynb')
@@ -15,7 +15,7 @@ from datetime import datetime
 import csv
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-get_ipython().run_line_magic('matplotlib', 'inline')
+# get_ipython().run_line_magic('matplotlib', 'inline')
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import statistics
@@ -125,35 +125,47 @@ def find_center(new_x):
 # In[26]:
 
 
-file_name = '1E8k8gI_xYk3420.csv'
-
-#running:
-x = load_data(file_name)[0]
-y = load_data(file_name)[1]
-z = load_data(file_name)[2]
-
-#!initial 
-scatter_2d(x,y, title="No Augmentation Applied")
-scatter_3d(x,y,z)
-
-#!transformed
-# file_name = 'final_demo.csv'
-# scatter_2d(file_name)
-# scatter_3d(file_name)
-
-
-# In[30]:
-
+# file_name = '1E8k8gI_xYk3420.csv'
 
 # #running:
-file_name_transformed = '1E8k8gI_xYk3420_rotation_15.csv'
-x = load_data(file_name_transformed)[0]
-y = load_data(file_name_transformed)[1]
-z = load_data(file_name_transformed)[2]
+# x = load_data(file_name)[0]
+# y = load_data(file_name)[1]
+# z = load_data(file_name)[2]
 
 # #!initial 
-scatter_2d(x,y, title="Projective Geometry")
-scatter_3d(x,y,z)
+# scatter_2d(x,y, title="No Augmentation Applied")
+# scatter_3d(x,y,z)
+
+# #!transformed
+# # file_name = 'final_demo.csv'
+# # scatter_2d(file_name)
+# # scatter_3d(file_name)
+
+
+# # In[30]:
+
+
+# # #running:
+# file_name_transformed = '1E8k8gI_xYk3420_rotation_15.csv'
+# x = load_data(file_name_transformed)[0]
+# y = load_data(file_name_transformed)[1]
+# z = load_data(file_name_transformed)[2]
+
+# # #!initial 
+# scatter_2d(x,y, title="Projective Geometry")
+# scatter_3d(x,y,z)
+
+
+# # In[ ]:
+
+
+def visualize(filename):
+    x = load_data(filename)[0]
+    y = load_data(filename)[1]
+    z = load_data(filename)[2]
+
+    scatter_2d(x,y,title = "First visualization")
+    scatter_3d(x,y,z)
 
 
 # In[ ]:

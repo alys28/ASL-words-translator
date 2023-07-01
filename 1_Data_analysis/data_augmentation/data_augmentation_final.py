@@ -24,58 +24,58 @@ from pathlib import Path
 # In[2]:
 
 
-get_ipython().run_line_magic('run', 'data_visualization.ipynb')
+# get_ipython().run_line_magic('run', 'data_visualization.ipynb')
 
 
 # In[3]:
 
 
 # Get all labels
-names = []
-for dir in os.listdir("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/reformatting-the-data/data_25_labels"):
-    if dir !=  '.DS_Store':
-        names.append(dir)
-names
+# names = []
+# for dir in os.listdir("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/reformatting-the-data/data_25_labels"):
+#     if dir !=  '.DS_Store':
+#         names.append(dir)
+# names
 
 
 # In[3]:
 
 
-test_arr = np.array([[1,2,3,4],[5,6,7,8]], dtype=np.float32)
-# test_arr[:,:2]
-origin = np.mean(test_arr[:,:2], axis=0)
-test_arr[:,:2] -= origin
-origin, test_arr
+# test_arr = np.array([[1,2,3,4],[5,6,7,8]], dtype=np.float32)
+# # test_arr[:,:2]
+# origin = np.mean(test_arr[:,:2], axis=0)
+# test_arr[:,:2] -= origin
+# origin, test_arr
 
 
 # In[4]:
 
 
-test_arr[:,2] = 1
-test_arr
+# test_arr[:,2] = 1
+# test_arr
 
 
 # In[5]:
 
 
-test_arr[:, 1]
+# test_arr[:, 1]
 
 
 # In[6]:
 
 
-plt.scatter(test_arr[:,0], test_arr[:, 1])
-plt.scatter(0, 0, c="red")
-plt.arrow(0,0,1,1, width=0.03)
-plt.show()
+# plt.scatter(test_arr[:,0], test_arr[:, 1])
+# plt.scatter(0, 0, c="red")
+# plt.arrow(0,0,1,1, width=0.03)
+# plt.show()
 
 
 # In[7]:
 
 
 # df = pd.read_csv("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/demo.csv")
-df = pd.read_csv("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/demo.csv")
-df
+# df = pd.read_csv("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/demo.csv")
+# df
 
 
 # In[8]:

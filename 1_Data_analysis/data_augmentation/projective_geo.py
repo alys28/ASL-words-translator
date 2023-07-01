@@ -148,6 +148,8 @@ def xinlei_vinci(file_name, negativity = False):
         new_df.loc[row] = single_row
         single_row = []
 
+    #deleting the last 4 characters of the file name (.csv) 
+    file_name = file_name[:-4]
     new_file_name = file_name+'_projective_geo_'+str(int(abs(y_vanishing_point)))+'_'+str(negativity)+'.csv'
     new_df.to_csv(new_file_name, index=False)
                 

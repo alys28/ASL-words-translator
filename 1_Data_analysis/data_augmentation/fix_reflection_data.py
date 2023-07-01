@@ -123,7 +123,7 @@ def swap_coordinates(data, pairs):
 
 
 def save_file(df, name, path):
-    newFileName = "reflexion_" + str(name)
+    newFileName =  str(name)[:-4] + "_reflexion.csv"
     
     df.to_csv(os.path.join(path, newFileName), index=False)
 
