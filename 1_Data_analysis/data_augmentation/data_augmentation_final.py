@@ -21,101 +21,6 @@ import random
 from pathlib import Path
 
 
-# In[2]:
-
-
-# get_ipython().run_line_magic('run', 'data_visualization.ipynb')
-
-
-# In[3]:
-
-
-# Get all labels
-# names = []
-# for dir in os.listdir("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/training_models/mediapipe/reformatting-the-data/data_25_labels"):
-#     if dir !=  '.DS_Store':
-#         names.append(dir)
-# names
-
-
-# In[3]:
-
-
-# test_arr = np.array([[1,2,3,4],[5,6,7,8]], dtype=np.float32)
-# # test_arr[:,:2]
-# origin = np.mean(test_arr[:,:2], axis=0)
-# test_arr[:,:2] -= origin
-# origin, test_arr
-
-
-# In[4]:
-
-
-# test_arr[:,2] = 1
-# test_arr
-
-
-# In[5]:
-
-
-# test_arr[:, 1]
-
-
-# In[6]:
-
-
-# plt.scatter(test_arr[:,0], test_arr[:, 1])
-# plt.scatter(0, 0, c="red")
-# plt.arrow(0,0,1,1, width=0.03)
-# plt.show()
-
-
-# In[7]:
-
-
-# df = pd.read_csv("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/demo.csv")
-# df = pd.read_csv("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/demo.csv")
-# df
-
-
-# In[8]:
-
-
-#test
-
-frame = df.iloc[0].to_numpy()
-frame = frame.reshape((75, 4))
-frame[0]
-# new_frame = rotate(frame, 5)
-# print(new_frame[0])
-# print(frame[0])
-
-
-# In[9]:
-
-
-df.to_numpy().shape
-
-
-# In[10]:
-
-
-all_frames = df.to_numpy().reshape((len(df), 75, 4))
-all_frames[0][0]
-all_frames.shape
-
-
-# In[11]:
-
-
-print(f"standard variation x: {np.std(all_frames[:, :, 0])}")
-print(f"standard variation y: {np.std(all_frames[:, :, 1])}")
-print(f"standard variation z: {np.std(all_frames[:, :, 2])}")
-
-
-# In[12]:
-
-
 def change_origin(frame):
   new_origin = np.mean(frame[:,:2], axis=0)
   # print(new_origin.shape)
@@ -162,24 +67,6 @@ def rotate(frame, angle, origin=[0, 0]):
     for i in range(len(new_frame)):
         new_frame[i][:2] = np.matmul(rotation_matrix, new_frame[i][:2])
     return frame, new_frame
-
-
-# In[16]:
-
-
-#rotation without changing origin
-_, f1 = rotate(all_frames[0], 10)
-
-
-# In[17]:
-
-
-_, frame = change_origin(all_frames[0])
-_, _=rotate(frame, 10)
-
-
-# In[9]:
-
 
 class VectorTransformation():
 
@@ -230,10 +117,12 @@ class VectorTransformation():
                      [0, 1+self.scale_y, 0], 
                      [0, 0, 1]])
     
+  #reflection is incorrect
   def reflection_matrix(self):
-    return np.array([[(-1)**(int(self.reflect)), 0, 0],
-                     [0, 1, 0], 
-                     [0, 0, 1]])
+    pass
+    # return np.array([[(-1)**(int(self.reflect)), 0, 0],
+    #                  [0, 1, 0], 
+    #                  [0, 0, 1]])
     
   def change_origin(self, frame):
     new_origin = np.mean(frame[:,:2], axis=0)
@@ -241,17 +130,13 @@ class VectorTransformation():
     new_frame[:,:2] -= new_origin
     return new_frame 
 
-
-# In[10]:
-
-
 def add_to_class(Class):  
     def wrapper(obj):
         setattr(Class, obj.__name__, obj)
     return wrapper
 
 
-# In[11]:
+
 
 
 @add_to_class(VectorTransformation)
@@ -264,7 +149,7 @@ def transform(self, frame, change_shear_direction=False):
             new_frame = self.change_origin(new_frame)
 
     for i in range(len(new_frame)):
-        new_frame[i][:3] = np.matmul(self.reflection_matrix(), new_frame[i][:3])
+        # new_frame[i][:3] = np.matmul(self.reflection_matrix(), new_frame[i][:3])
         # print(new_frame[i][:3])
         new_frame[i][:3] = np.matmul(self.translation_matrix(), new_frame[i][:3])
         if change_shear_direction:
@@ -307,27 +192,6 @@ def visualize_change(self, original_frame, new_frame, plot=False):
     #plt.gca().set_aspect('equal', adjustable='box')
     plt.xlim([min(np.amin(original_frame[:, 0]), np.amin(new_frame[:, 0]))-1, max(np.amax(original_frame[:, 0]), np.amax(new_frame[:, 0]))+1])
     plt.ylim([min(np.amin(original_frame[:, 1]), np.amin(new_frame[:, 1]))-1, max(np.amax(original_frame[:, 1]), np.amax(new_frame[:, 1]))+1])
-
-
-# In[22]:
-
-
-data_aug = VectorTransformation(shear_x=0.2, reflection=False, center_data=True)
-new_frame = data_aug.transform(all_frames[0])
-# new_frame
-
-
-# In[23]:
-
-
-_, frame = change_origin(new_frame)
-data_aug.visualize_change(all_frames[0], frame)
-
-
-# ##random funcitons
-# 
-
-# In[13]:
 
 
 @add_to_class(VectorTransformation)
@@ -418,188 +282,7 @@ def get_new_data(self, frames: list([]), ratio, random=True):
       new_video.append(self.transform(frames[i]))
         # new_labels.append(labels[i])
     new_data.append(new_video)
-
-
-  # return new_data, new_labels
   return new_data
-
-
-# ##generating data
-
-# In[17]:
-
-
-data_augmentation = VectorTransformation(translation_x=0.1, translation_y=0.1, shear_x=0.1, shear_y=0.1, reflection=False,
-                                         rotation_angle=20, center_data=False, random=True)
-
-new_data = data_augmentation.get_new_data(all_frames, 4)
-new_data = np.array(list(new_data))
-new_data.shape
-
-
-# In[29]:
-
-
-print(all_frames[50][0], new_data[0][50][0])
-all_frames[10][0], new_data[0][10][0]
-
-
-# In[30]:
-
-
-data_augmentation.visualize_change(all_frames[50], new_data[0][50])
-
-
-# In[ ]:
-
-
-# Evaluate which values are good for each transformation
-# Maybe use Unsupervised learning and cluster the augmented data with the original data as centroids
-
-
-# ##Visualization on shapes
-
-# In[31]:
-
-
-square = np.array([[0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1], [0, 0, 1]], dtype=np.float32)
-plt.plot(square[:, 0], square[:, 1])
-plt.scatter(square[:, 0], square[:, 1])
-plt.xlim([-0.5, 1.5])
-plt.ylim([-0.5, 1.5])
-plt.axhline(y=0, color="black")
-plt.axvline(x=0, color="black")
-
-
-# In[32]:
-
-
-vt = VectorTransformation(translation_x=1, center_data=False, reflection=False)
-new_square = vt.transform(square)
-new_square
-
-
-# In[33]:
-
-
-plt.plot(new_square[:, 0], new_square[:, 1])
-plt.xlim([-2, 3])
-plt.ylim([-2, 3])
-plt.axhline(y=0, color="black")
-plt.axvline(x=0, color="black")
-
-
-# In[34]:
-
-
-vt.visualize_change(square, new_square, plot=True)
-
-
-# In[35]:
-
-
-vt.shx = 0.5
-vt.shy = 1
-vt.center = True
-square3 = vt.transform(square[:-1])
-square3
-
-
-# In[36]:
-
-
-square3 = np.append(square3, [square3[0]]).reshape(square.shape)
-vt.visualize_change(square, square3, plot=True)
-
-
-# In[37]:
-
-
-vt2 = VectorTransformation(shear_x = 2, center_data=False, reflection=False)
-
-r1 = np.array([[-1, 0, 1], [1, 0, 1], [1, 1, 1], [-1, 1, 1], [-1, 0, 1]], dtype=np.float32)
-
-r2 = vt2.transform(r1[:-1], change_shear_direction=True)
-r2 
-
-
-# In[38]:
-
-
-r2 = np.append(r2, [r2[0]]).reshape(r1.shape)
-vt2.visualize_change(r1, r2, plot=True)
-
-
-# In[39]:
-
-
-data_augmentation = VectorTransformation(translation_x=0.1, translation_y=0.1, shear_x=0.1, shear_y=0.1, reflection=False,
-                                         rotation_angle=20, center_data=False, random=True)
-frame = df.iloc[0].to_numpy()
-frame = frame.reshape((75, 4))
-
-x = data_augmentation.get_new_data(frames=all_frames, ratio=3, random=True)
-x = np.array(x)
-x.shape
-
-
-# In[40]:
-
-
-data_augmentation = VectorTransformation(translation_x=0.1, translation_y=0.1, shear_x=0.1, shear_y=0.1, reflection=False,
-                                         rotation_angle=20, center_data=False, random=True)
-frame = df.iloc[0].to_numpy()
-frame = frame.reshape((75, 4))
-
-x = data_augmentation.get_new_data(frames=all_frames, ratio=3, random=True)
-x = np.array(x)
-all_frames.shape
-
-x[0].reshape((-1, 300)).shape
-
-
-# In[41]:
-
-
-path_4_labels = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/data_augmentation/data_4_labels_augmentation"
-data_augmentation = VectorTransformation(translation_x=0.1, translation_y=0.1, shear_x=0.1, shear_y=0.1, reflection=False,
-                                         rotation_angle=20, center_data=False, random=True)
-num_coords = 21 + 21 + 33
-headerList = []
-for val in range(1, num_coords+1):
-    headerList += ['x{}'.format(val), 'y{}'.format(val), 'z{}'.format(val), 'v{}'.format(val)]
-for folder in os.listdir(path_4_labels):
-    if folder != ".DS_Store":
-        files = os.listdir(os.path.join(path_4_labels, folder))
-        for file in files:
-            if file != ".DS_Store":
-                file_path = (os.path.join(path_4_labels, folder, file))
-                df = df.drop("class", axis=1)
-                all_frames = df.to_numpy()
-                print(all_frames.shape)
-                all_frames = all_frames.reshape((len(df), 75, 4))
-                new_frames = np.array(data_augmentation.get_new_data(frames=all_frames, ratio=3, random=True))
-                for i in range(len(new_frames)):
-                     # Rename the file
-                    name = file + "_AUGMENTED_" + str(i) + ".csv"
-                    video = new_frames[i].reshape((-1, 300))
-                    pd.DataFrame(video).to_csv(os.path.join(path_4_labels, folder, name), header=headerList, index=False)
-
-
-# In[42]:
-
-
-data_augmentation = VectorTransformation(scale_x=0.2, scale_x=0.2, shear_x=0.1, shear_y=0.1, reflection=False,
-                                         rotation_angle=20, center_data=False, random=True)
-frame = df.iloc[0].to_numpy()
-frame = frame.reshape((75, 4))
-
-x = data_augmentation.get_new_data(frames=all_frames, ratio=3, random=True)
-x = np.array(x)
-x.shape
-
-
-# In[18]:
 
 
 def apply_transformation_on_array(transformation_func, arr):
@@ -612,20 +295,9 @@ def apply_transformation_on_array(transformation_func, arr):
         new_arr.append(new_frame)
     return np.array(new_arr)
 
-
-
-
-# In[30]:
-
-
-get_ipython().run_line_magic('run', 'projective_geo.ipynb')
-
-
-# In[20]:
-
-
-def apply_transformation_on_data(folder_path, file_path, name, vectorObject, label):
+def apply_transformation_on_data(folder_path, file_path, name, vectorObject):
     df = pd.read_csv(file_path)
+    label = df["class"].iloc[0]
     df = df.drop("class", axis=1)
     all_frames = df.to_numpy()
     print(all_frames.shape)
@@ -639,34 +311,24 @@ def apply_transformation_on_data(folder_path, file_path, name, vectorObject, lab
     df = pd.DataFrame(video)
     df.columns = headerList
     df.insert(0, "class", [label for i in range(video.shape[0])])
-    new_file = df.to_csv(os.path.join(folder_path, label, name), index=False)
+    new_file = df.to_csv(os.path.join(folder_path, name), index=False)
     return new_file
 
-
-# In[21]:
-
-
-vectorObject=VectorTransformation(translation_x=-0.5, translation_y=-0.5, center_data=True, random=True)
 def apply_transformation_on_folder(folder_path):
-    for folder in os.listdir(os.path.join(folder_path)):
-        if folder != ".DS_Store":
-            files = os.listdir(os.path.join(folder_path, folder))
-            for file in files:
-                apply_transformation_on_data(folder_path, file_path=os.path.join(folder_path, folder, file),
-                                             name=os.path.splitext(file)[0] + "_translate_0.5_left" + ".csv", vectorObject=vectorObject, label=folder)
+# center_data=True, translation_x=0, translation_y=0, rotation_angle=0, shear_x=0, shear_y=0, scaling_x=0, scaling_y=0, reflection=True, random=False
+    # for folder in os.listdir(os.path.join(folder_path)):
+        # if folder != ".DS_Store":
+    files = os.listdir(folder_path)
+    max_trans = [0.5, 10.0, 0.2, 0.2]
+    for transformation in range(0, len(max_trans)):
+        trans = [max_trans[i] if i == transformation else 0 for i in range(0,len(max_trans))]
+        print(trans)
+        for file in files:
+          vectorObject=VectorTransformation(center_data = False, translation_x = trans[0], translation_y = random.uniform(0, trans[0]), rotation_angle = trans[1], shear_x = 0, shear_y = 0, scaling_x = trans[2], scaling_y = trans[3], reflection = False, random=True)
+          apply_transformation_on_data(folder_path, file_path=os.path.join(folder_path, file),
+                                      name=os.path.splitext(file)[0] + "_transform" + ".csv", vectorObject=vectorObject)
 
                 
-
-
-# In[22]:
-
-
-apply_transformation_on_folder("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/data_augmentation/data_four_labels_augmentation/")
-
-
-# In[31]:
-
-
 def apply_projective_geo(folder_path):
     for folder in os.listdir(os.path.join(folder_path)):
         if folder != ".DS_Store":
@@ -674,15 +336,6 @@ def apply_projective_geo(folder_path):
             for file in files:
                 xinlei_vinci(os.path.join(folder_path, folder, file), negativity = False)
                 xinlei_vinci(os.path.join(folder_path, folder, file), negativity = True)
-
-
-# In[32]:
-
-
-apply_projective_geo("/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/data_augmentation/data_four_labels_augmentation/")
-
-
-# In[ ]:
 
 
 def translation_matrix(self):
@@ -714,4 +367,3 @@ def reflection_matrix(self):
   return np.array([[(-1)**(int(self.reflect)), 0, 0],
                     [0, 1, 0], 
                     [0, 0, 1]])
-

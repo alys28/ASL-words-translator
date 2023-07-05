@@ -107,12 +107,7 @@ def projective_geometry_not_centered(pt_fuite, corrected_x,y):
 #creating a function so that Aly is happy.
 
 #the y coordinate of the point de fuite should be between [-5,-1] U [3,8]
-def xinlei_vinci(file_name, negativity = False):
-    if(negativity == True):
-        y_vanishing_point = np.random.uniform(-15, -5)
-    else:
-        y_vanishing_point = np.random.uniform(5,15)
-    
+def xinlei_vinci(file_name, negativity = False): 
     df = pd.read_csv(file_name)
     df.head()
 
@@ -120,7 +115,7 @@ def xinlei_vinci(file_name, negativity = False):
     new_df=df
     
     
-    print(file_name)
+    # print(file_name)
     new_df.head()
     single_row = []
     #iterate through every row
@@ -138,6 +133,10 @@ def xinlei_vinci(file_name, negativity = False):
             single_row.append(df[col].iloc[row])
             corrected_x = single_row[len(single_row)-2]
             if(col[0]=='y'):
+                if(negativity == True):
+                    y_vanishing_point = np.random.uniform(-15, -5)
+                else:
+                    y_vanishing_point = np.random.uniform(5,15)
                 by = y_vanishing_point
 
                 slope = -by/(corrected_x-ax)
