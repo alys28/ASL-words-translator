@@ -18,7 +18,8 @@ mp_holistic = mp.solutions.holistic # Mediapipe Solutions
 def extract_coordinates(max_length):
     rows = []
     #creating empty file in folder, I added the start_time in the name of the csv file, so that if a symbol appears many times in a video, it will still be created in two different csv files, just that they will have different starting times
-    csv_file = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/3_Mediapipe/mediapipe/LSTM trial/demo_test/demo.csv"
+    # csv_file = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/3_Mediapipe/mediapipe/LSTM trial/demo_test/demo.csv"
+    # csv_file = "/Tmp/shariffa/ASL-WORDS-TRANSLATOR/3_Mediapipe/mediapipe/LSTM trial/demo_test/demo.csv"
     # csv_file="D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/training_models/mediapipe/demo_test/demo.csv"
     # if os.path.exists(csv_file):
     #     return 
@@ -156,11 +157,11 @@ def make_prediction(model_path, labels, csv_file, max_length):
 
 # model_path = r"D:\Personnel\Other learning\Programming\Personal_projects\ASL_Language_translation\training_models\mediapipe\Simple-Dense-Layers\regularized-4-labels.10-0.68"# "D:/Personnel/Other learning/Programming/Personal_projects/ASL_Language_translation/training_models/mediapipe/Simple-Dense-Layers/regularized-4-labels.10-0.68"
 while True:
-    model_path = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/3_Mediapipe/mediapipe/LSTM trial/LSTM-4-labels-FULL-DATA.31-0.84"
+    model_path = "/Tmp/shariffa/LSTM-4-labels-FULL-DATA.31-0.84"
     tf.keras.models.load_model(model_path)
     labels = ["coffee", "dog", "milk", "door"]
     max_length = 211
-    csv_file = "/Users/aly/Documents/Programming/Apps/Machine Learning/ASL Converter/3_Mediapipe/mediapipe/LSTM trial/demo_test/demo.csv"
+    csv_file = "/Tmp/shariffa/ASL-words-translator/3_Mediapipe/mediapipe/LSTM trial/demo_test/demo.csv"
     input("TRY ME OUT!! ")
     extract_coordinates(max_length)
     print("LOADING...")
