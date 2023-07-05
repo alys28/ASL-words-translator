@@ -1,16 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
-#converting jupyter notebook to python file
-# get_ipython().system('jupyter nbconvert --to script data_augmentation_final.ipynb')
-
-
-# In[8]:
-
-
 import os
 import numpy as np
 import pandas as pd
@@ -28,12 +15,7 @@ def change_origin(frame):
   new_frame[:,:2] -= new_origin
   return frame, new_frame 
 
-
-# In[13]:
-
-
 def visualize_rotation(func):
-
   def wrap(*args, **kwargs):
     original_frame, new_frame = func(*args, **kwargs)
     plt.scatter(original_frame[:, 0], original_frame[:, 1], c="blue", label="original_data")
@@ -47,16 +29,8 @@ def visualize_rotation(func):
 
   return wrap
 
-
-# In[14]:
-
-
 def visualize(frame):
     plt.scatter(frame[:, 0], frame[:, 1])
-
-
-# In[15]:
-
 
 @visualize_rotation
 def rotate(frame, angle, origin=[0, 0]):
@@ -135,10 +109,6 @@ def add_to_class(Class):
         setattr(Class, obj.__name__, obj)
     return wrapper
 
-
-
-
-
 @add_to_class(VectorTransformation)
 def transform(self, frame, change_shear_direction=False):
     new_frame = np.copy(frame)
@@ -170,10 +140,6 @@ def transform(self, frame, change_shear_direction=False):
         
     return new_frame
 
-
-# In[12]:
-
-
 @add_to_class(VectorTransformation)
 def visualize_change(self, original_frame, new_frame, plot=False):
     if plot:
@@ -204,10 +170,6 @@ def set_random_variables(self):
     self.shy = random.uniform(0, self.shy_max)
     self.scale_x= random.uniform(0, self.scale_x_max)
     self.scale_y = random.uniform(0, self.scale_y_max)
-
-
-# In[14]:
-
 
 import random 
 
@@ -241,10 +203,6 @@ def random_scaling_matrix(self):
                   [0, random.uniform(1, self.scale_y), 0], 
                   [0, 0, 1]])
 
-
-# In[15]:
-
-
 @add_to_class(VectorTransformation)
 def random_transform(self, frame):
     new_frame = np.copy(frame[:, :2])
@@ -266,10 +224,6 @@ def random_transform(self, frame):
     new_frame[:, 2] = frame[:, 2]
         
     return new_frame
-
-
-# In[16]:
-
 
 @add_to_class(VectorTransformation)
 def get_new_data(self, frames: list([]), ratio, random=True):
@@ -300,12 +254,14 @@ def apply_transformation_on_data(folder_path, file_path, name, vectorObject):
     label = df["class"].iloc[0]
     df = df.drop("class", axis=1)
     all_frames = df.to_numpy()
-    print(all_frames.shape)
+    # print(all_frames.shape)
     num_coords = 21 + 21 + 33
     headerList = []
     for val in range(1, num_coords+1):
         headerList += ['x{}'.format(val), 'y{}'.format(val), 'z{}'.format(val), 'v{}'.format(val)]
     all_frames = all_frames.reshape((len(df), 75, 4))
+    #this is what I need to check
+    # print("all_frames")
     new_frames = np.array(vectorObject.get_new_data(all_frames, ratio=1))
     video = new_frames.reshape((-1, 300))
     df = pd.DataFrame(video)
@@ -318,24 +274,24 @@ def apply_transformation_on_folder(folder_path):
 # center_data=True, translation_x=0, translation_y=0, rotation_angle=0, shear_x=0, shear_y=0, scaling_x=0, scaling_y=0, reflection=True, random=False
     # for folder in os.listdir(os.path.join(folder_path)):
         # if folder != ".DS_Store":
-    files = os.listdir(folder_path)
-    max_trans = [0.5, 10.0, 0.2, 0.2]
+    max_trans = [0.5, 5.0, 0.4, 0.4]
     for transformation in range(0, len(max_trans)):
         trans = [max_trans[i] if i == transformation else 0 for i in range(0,len(max_trans))]
+        files = os.listdir(folder_path)
         print(trans)
         for file in files:
           vectorObject=VectorTransformation(center_data = False, translation_x = trans[0], translation_y = random.uniform(0, trans[0]), rotation_angle = trans[1], shear_x = 0, shear_y = 0, scaling_x = trans[2], scaling_y = trans[3], reflection = False, random=True)
           apply_transformation_on_data(folder_path, file_path=os.path.join(folder_path, file),
-                                      name=os.path.splitext(file)[0] + "_transform" + ".csv", vectorObject=vectorObject)
+                                      name=os.path.splitext(file)[0] + f"_{transformation}_" + ".csv", vectorObject=vectorObject)
 
                 
-def apply_projective_geo(folder_path):
-    for folder in os.listdir(os.path.join(folder_path)):
-        if folder != ".DS_Store":
-            files = os.listdir(os.path.join(folder_path, folder))
-            for file in files:
-                xinlei_vinci(os.path.join(folder_path, folder, file), negativity = False)
-                xinlei_vinci(os.path.join(folder_path, folder, file), negativity = True)
+# def apply_projective_geo(folder_path):
+#     for folder in os.listdir(os.path.join(folder_path)):
+#         if folder != ".DS_Store":
+#             files = os.listdir(os.path.join(folder_path, folder))
+#             for file in files:
+#                 xinlei_vinci(os.path.join(folder_path, folder, file), negativity = False)
+#                 xinlei_vinci(os.path.join(folder_path, folder, file), negativity = True)
 
 
 def translation_matrix(self):
