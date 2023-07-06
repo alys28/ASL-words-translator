@@ -141,5 +141,3 @@ dependencies:
       - werkzeug==2.3.6
       - wrapt==1.14.1
 prefix: /Tmp/shariffa/miniconda3/envs/asl-converter
- env export > environment.yml
-(asl-converter) shariffa@blg25 ~ $ 
