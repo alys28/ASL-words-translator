@@ -1,5 +1,5 @@
 #I am using a shorcut, which is nbimporter, in order to import the functions of another notebook in the following python file
-# import nbimporter
+import nbimporter
 import os
 import pandas as pd
 
@@ -9,50 +9,33 @@ from fix_reflection_data import swap_coordinates, definePairs, save_file
 from data_visualization import visualize
 
 
-def applyProjectiveGeo(currDir):
-    files = os.listdir(currDir)
-    for file in files:
-        currfilePath = os.path.join(currDir, file)
-        print(currfilePath)
-        xinlei_vinci(currfilePath, negativity = False)
-        xinlei_vinci(currfilePath, negativity = True)
+def applyProjectiveGeo(currFilePath):
+    xinlei_vinci(currFilePath, negativity = False)
+    xinlei_vinci(currFilePath, negativity = True)
 
-def applyReflection(currDir):
-    files = os.listdir(currDir)
-    for file in files:
-        currfilePath = os.path.join(currDir, file)
-        print(currfilePath)
-
-        df = pd.read_csv(currfilePath)
-        new_df = swap_coordinates(df, definePairs())
-        save_file(df = new_df, name = file, path = currDir)
-    
+def applyReflection(currFilePath, currDir, file):
+    df = pd.read_csv(currFilePath)
+    new_df = swap_coordinates(df, definePairs())
+    save_file(df = new_df, name = file, path = currDir)
 
 def applySarinaTransform(currFileDir):
     apply_transformation_on_folder(currFileDir)
 
-def visualizeData(currDir):
-    files = os.listdir(currDir)
-    for file in files:
-        currfilePath = os.path.join(currDir, file)
-        visualize(currfilePath)
+def visualizeData(currFilePath):
+    visualize(currFilePath)
 
-    # visualize("/Tmp/linxinle/Programming/ASL-words-translator/000_Database/25LabelsData/test/book/0UsjUE-TXns0.csv")
-    # visualize("/Tmp/linxinle/Programming/ASL-words-translator/1_Data_analysis/data_augmentation/Data_augmentation/new_files/train/label/9bosgmeAAuo7031.csv")
-
-def applyTransformations(index, currDir):
-    print("Transformation number: ", index)
+def applyTransformations(index, currFilePath, currDir, file):
+    print("index")
     if index == 0:
-        applyProjectiveGeo(currDir)
+        applyProjectiveGeo(currFilePath)
     if index == 1:
-        applyReflection(currDir)
+        applyReflection(currFilePath, currDir, file)
     if index == 2:
         applySarinaTransform(currDir)
 
 
 def transformMe(DATADIR, NUMTRANS):
-    
-    for index in range(0,NUMTRANS):
+    for index in range(2,NUMTRANS):
         #running through all the files
         FOLDERS = ['train', 'test']
         for folder in FOLDERS:
@@ -60,21 +43,20 @@ def transformMe(DATADIR, NUMTRANS):
             labels = os.listdir(currDir)
 
             for label in labels:
-                files = os.listdir(os.path.join(currDir, label))
-
                 #augmenting the files
-                currLabelDir = os.path.join(currDir, label)
-                applyTransformations(index, currLabelDir)
-                
+                if folder != ".DS_Store":
+                    currDir = os.path.join(currDir, label)
+                    files = os.listdir(currDir)
+                    # print(files)
 
-                #visualizing the files
-                # visualizeData(os.path.join(currDir, label))
+                    for file in files:
+                        currfilePath = os.path.join(currDir, file)
+                        applyTransformations(index, currfilePath, currDir, file)
+                        # visualize(currfilePath)
 
 #following value should be changed
-# DATADIR = r"D:\Personnel\Other learning\Programming\Personal_projects\ASL_Language_translation\1_Data_analysis\data_augmentation\Data_augmentation\new_files"
-# DATADIR = r"/Tmp/linxinle/Programming/ASL-words-translator/1_Data_analysis/data_augmentation/Data_augmentation/new_files"#number of transformations that we have.
-DATADIR = r"/Tmp/linxinle/Programming/ASL-words-translator/000_Database/Aug25LabelsData"
-# DATADIR = r"/Tmp/linxinle/Programming"
+DATADIR = r"D:\Personnel\Other learning\Programming\Personal_projects\ASL_Language_translation\1_Data_analysis\data_augmentation\Data_augmentation\new_files"
+#number of transformations that we have.
 NUMTRANS = 3
 
 os.chdir(DATADIR)
@@ -82,4 +64,3 @@ print(os.getcwd())
 
 transformMe(DATADIR, NUMTRANS)
 # applySarinaTransform(DATADIR + r"\train")
-# visualizeData(DATADIR)

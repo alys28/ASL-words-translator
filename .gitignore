@@ -11,6 +11,7 @@ gpt-2/
 *.npy
 *.zip
 *.csv
+*.pb
 /american-sign-language_1
 /ASLClassification
 /datasetASL
@@ -31,3 +32,5 @@ ASLClassification.zip
 /training_models/ResNet_four_var_weights.25-0.62
 /training_models/mediapipe/reformatting-the-data/combined-dataset
 /training_models/mediapipe/combined-dataset
+/000_Database
+/00_Trash
