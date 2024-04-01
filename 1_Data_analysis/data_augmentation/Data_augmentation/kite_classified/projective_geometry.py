@@ -10,17 +10,17 @@ class ProjectiveGeometry:
     values: torch.Tensor
     points: np.array  # each tuple is (x, y, z)
     pt_fuite: tuple[float, float, float]  # (x, y, z)
-    x: np.array #only the x values.
+    x: np.array  # only the x values.
     z: np.array
 
     def __init__(self, values: torch.Tensor) -> None:
         """Initialize the points in the tensors"""
         self.values = values
 
+
         # still need to define these values from the torch object
-
-
-        self.x = np.array([x[0] for x in self.points])
+        self.x = np.array([point[0] for points in self.points])
+        self.z = np.array([point[0] for points in self.points])
 
         compute_pt_fuite_x()
 
@@ -28,7 +28,7 @@ class ProjectiveGeometry:
         """Initialize the point the fuite, with x being the mean, and y being random"""
         # initialize as mean, but could also be initialized randomly.
         self.pt_fuite[0] = np.mean(self.x)
-        self.pt_futie[2] = np.mean(self.z)
+        self.pt_fuite[2] = np.mean(self.z)
 
         # these values can be updated later.
         if (negativity == True):
@@ -58,8 +58,19 @@ class ProjectiveGeometry:
 
 def compute_ProjectiveGeometry(values: torch.Tensor) -> torch.Tensor:
     """Compute the projective geometry given a set of points"""
-    pg = ProjectiveGeometry(values)
-    return pg.projective_geometry()
+    # I need the x, y, and z channels.
+    # 120 frames.
+    # technically, I personally need to show it each file, the x, y and z
+    values = torch.reshape(values, (120, 3, 25, 2))
+
+    final = []
+    # call the ProjectiveGeometry object for each frame
+    for frame in values:
+    # calling the ProjectiveGeometry Object.
+        pg = ProjectiveGeometry(values)
+        final.append(pg.projective_geometry())
+    final = torch.tensor(final)
+    return torch.reshape(final, (3, 120, 25, 2))
 
 
 if __name__ == '__main__':
