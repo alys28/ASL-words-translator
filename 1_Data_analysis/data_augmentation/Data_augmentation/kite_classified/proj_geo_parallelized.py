@@ -27,9 +27,9 @@ class ProjectiveGeometry:
 
         # these values can be updated later.
         if negativity:
-            self.pt_fuite[1] = np.random.uniform(-30, -5)
+            self.pt_fuite[1] = np.random.uniform(-2, -0.1)
         else:
-            self.pt_fuite[1] = np.random.uniform(-30, -5)
+            self.pt_fuite[1] = np.random.uniform(0.1, 2)
 
     def projective_geometry(self) -> torch.tensor:
         """Given a pt_fuite tuple[x, y], returns an array of points"""
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     import torch
 
     # Load the file
-    pt_file = torch.load("sequence.pt")
+    pt_file = torch.load("sequence2.pt")
 
     # Print x coordinates
     print(pt_file.data[0][0][0])
