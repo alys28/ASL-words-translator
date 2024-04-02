@@ -22,11 +22,11 @@ class ProjectiveGeometry:
         self.z = points[1]
 
         # then here, reshape it into (25, 3)
-        self.points = torch.reshape(self.points, (25, 3))
+        # self.points = torch.reshape(self.points, (25, 3))
 
         # default value 
         self.pt_fuite = [0, 0, 0]
-        print('debug', points.size())
+        print('debug', self.points.size())
 
 
         # still need to define these values from the torch object
@@ -51,16 +51,39 @@ class ProjectiveGeometry:
         """Given a pt_fuite tuple[x, y], returns an array of points"""
         ax = self.pt_fuite[0]
         by = self.pt_fuite[1]
+        cz = self.pt_fuite[2]
 
-        new_points = []
+        new_points = self.points.clone()
         # compute for each joint
-        for i in range(len(self.points)):
-            slope = -by / (self.points[0][i] - ax)
-            # unsure about this function.
-            x_coord = (self.points[1][i] - by *
-                       (1 + (ax / (self.points[0][i] - ax)))) / slope
-            new_points.append([x_coord, self.points[1], self.points[2]])
-        return torch.tensor(new_points)
+        # print('debug', self.points)
+        # print(self.points.size()[1])
+
+        # parallelized
+        slope = -by / (self.points[0] - ax)
+        # this would be keeping 0 as x 
+        new_points[:, 0] = (self.points[1] - by *
+                       (1 + (ax / (self.points[0] - ax)))) / slope
+
+        # changing the z_axis
+        slope = -by / (self.points[0][i] - cz)
+        new_points[2] = (self.points[1] - by *
+                    (1 + (cz / (self.points[2] - cz)))) / slope
+
+        # linearly
+#         for i in range(self.points.size()[1]):
+#             # changing the x axis
+#             slope = -by / (self.points[0][i] - ax)
+#             new_points[0][i] = (self.points[1][i] - by *
+#                        (1 + (ax / (self.points[0][i] - ax)))) / slope
+
+#             # changing the z_axis
+#             slope = -by / (self.points[0][i] - cz)
+#             new_points[2][i] = (self.points[1][i] - by *
+#                        (1 + (cz / (self.points[2][i] - cz)))) / slope
+# # 
+        # print('debug', new_points)
+
+        return new_points
 
     def visualize(values: torch.Tensor) -> None:
         """Visualize the new coordinates
@@ -74,17 +97,21 @@ def compute_ProjectiveGeometry(inp_tensor: torch.Tensor) -> torch.Tensor:
     # 120 frames.
     # technically, I personally need to show it each file, the x, y and z
     inp_tensor = torch.reshape(inp_tensor, (2, 120, 3, 25))
-    output = []
+    output = torch.tensor([])
     for i in range(2):
         values = inp_tensor[1]
-        final = []
+        final = torch.tensor([])
         # call the ProjectiveGeometry object for each frame
         for frame in values:
             # calling the ProjectiveGeometry Object.
             pg = ProjectiveGeometry(frame)
-            final.append(pg.projective_geometry())
-        final = torch.tensor(final)
-        output.append(final)
+            final = torch.stack((final, pg.projective_geometry()))
+            # final.append()
+        # final = torch.tensor(final)
+        # output.append(final)
+        output = torch.stack(output, final)
+    print(output)
+    output = torch.tensor(output)
     return torch.reshape(output, (3, 120, 25, 2))
 
 

@@ -24,3 +24,5 @@ print(x.size())
 x = torch.reshape(x, (3, 2))
 print(x)
 print(x.size())
+
+print(x[0])
